@@ -2,22 +2,31 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Open in TradingView</title>
     <script>
-      // Lấy symbol từ URL, ví dụ: ?symbol=BYBIT:BTCUSDT
-      const params = new URLSearchParams(window.location.search);
-      const symbol = params.get("symbol") || "BYBIT:BTCUSDT";
-      const link = `tradingview://chart/${symbol}`;
-      // Redirect ngay
-      window.location.href = link;
-      setTimeout(() => {
-        document.getElementById("link").href = link;
-        document.getElementById("link").textContent = "Mở TradingView thủ công";
-      }, 1000);
+      window.onload = function () {
+        // Lấy symbol từ URL, ví dụ: ?symbol=BYBIT:BTCUSDT
+        const params = new URLSearchParams(window.location.search);
+        const symbol = params.get("symbol") || "BYBIT:BTCUSDT";
+
+        // URL deep link TradingView
+        const tvLink = `tradingview://chart/${symbol}`;
+
+        // Redirect ngay (để Safari/iPhone hiểu là hành động người dùng)
+        window.location.replace(tvLink);
+
+        // Nếu app không mở, hiển thị fallback link sau 1 giây
+        setTimeout(() => {
+          const a = document.getElementById("link");
+          a.href = tvLink;
+          a.textContent = "👉 Mở TradingView thủ công";
+        }, 1000);
+      };
     </script>
   </head>
   <body style="font-family:sans-serif; text-align:center; margin-top:50px;">
-    <h2>Đang mở TradingView...</h2>
+    <h2>⏳ Đang mở TradingView...</h2>
     <p>Nếu không tự mở, bấm vào đây:</p>
     <a id="link" href="#">Đang tải...</a>
   </body>
